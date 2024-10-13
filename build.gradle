@@ -1,0 +1,26 @@
+plugins {
+	// Apply the Java plugin to support Java projects.
+	id 'java'
+}
+
+repositories {
+	// Use Maven Central for resolving dependencies.
+	mavenCentral()
+}
+
+dependencies {
+	// Use JUnit test framework (JUnit 5) - dynamic version for JUnit
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.+'
+}
+
+java {
+	toolchain {
+		// Apply a specific Java toolchain to ease working on different environments.
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+test {
+	// Configure the test task to use JUnit Platform for running tests.
+	useJUnitPlatform()
+}
