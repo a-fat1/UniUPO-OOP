@@ -1,6 +1,9 @@
 package elaboration;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class ListManager {
 	private Map<String, ShoppingList> shoppingLists;
@@ -20,6 +23,10 @@ public class ListManager {
 	}
 
 	public void removeCategory(String category) {
+		// if(categories.isEmpty()) {
+		// 	throw new IllegalArgumentException("Non ci sono categorie da rimuovere.");
+		// }
+
 		if (!categories.remove(category)) {
 			throw new IllegalArgumentException("Categoria non esistente.");
 		}
