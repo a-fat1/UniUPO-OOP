@@ -1,17 +1,16 @@
 package ui.cli.menu;
 
+import elaboration.InputReader;
 import elaboration.ListManager;
 import elaboration.ShoppingList;
 
-import java.util.Scanner;
-
 public class ListsMenuCLI {
     private ListManager manager;
-    private Scanner scanner;
+    private InputReader inputReader;
 
-    public ListsMenuCLI(ListManager manager, Scanner scanner) {
+    public ListsMenuCLI(ListManager manager, InputReader inputReader) {
         this.manager = manager;
-        this.scanner = scanner;
+        this.inputReader = inputReader;
     }
 
     public void start() {
@@ -25,7 +24,7 @@ public class ListsMenuCLI {
             System.out.println("4. Torna al menu principale");
             System.out.print("\nSeleziona un'opzione: ");
 
-            switch (scanner.nextLine()) {
+            switch (inputReader.readLine()) {
                 case "1":
                     createNewList();
                     break;
@@ -56,7 +55,7 @@ public class ListsMenuCLI {
 
     private void createNewList() {
         System.out.print("\nInserisci il nome della nuova lista: ");
-        manager.addShoppingList(scanner.nextLine());
+        manager.addShoppingList(inputReader.readLine());
         System.out.println("Lista creata con successo.");
     }
 
@@ -68,7 +67,7 @@ public class ListsMenuCLI {
 
         System.out.print("\nInserisci il nome della lista da rimuovere: ");
         try {
-            manager.removeShoppingList(scanner.nextLine());
+            manager.removeShoppingList(inputReader.readLine());
             System.out.println("Lista rimossa con successo.");
         } catch (IllegalArgumentException e) {
             System.out.println("Errore: " + e.getMessage());
@@ -82,7 +81,7 @@ public class ListsMenuCLI {
         }
 
         System.out.print("\nInserisci il nome della lista da gestire: ");
-        String listName = scanner.nextLine();
+        String listName = inputReader.readLine();
 
         if (!manager.getShoppingLists().containsKey(listName)) {
             System.out.println("Lista non trovata.");
@@ -90,7 +89,7 @@ public class ListsMenuCLI {
         }
 
         ShoppingList list = manager.getShoppingList(listName);
-        ListMenuCLI listCLI = new ListMenuCLI(manager, scanner, list);
-        listCLI.start();
+        ArticlesMenuCLI articlesListCLI = new ArticlesMenuCLI(manager, list, inputReader);
+        articlesListCLI.start();
     }
 }

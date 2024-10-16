@@ -23,18 +23,18 @@ public class ListManager {
 	}
 
 	public void removeCategory(String category) {
-		// if(categories.isEmpty()) {
-		// 	throw new IllegalArgumentException("Non ci sono categorie da rimuovere.");
-		// }
-
+		if ("Non Categorizzati".equals(category)) {
+			throw new IllegalArgumentException("Non è possibile rimuovere la categoria 'Non Categorizzati'.");
+		}
+	
 		if (!categories.remove(category)) {
 			throw new IllegalArgumentException("Categoria non esistente.");
 		}
-		
+	
 		for (ShoppingList list : shoppingLists.values()) {
 			list.updateCategory(category, "Non Categorizzati");
 		}
-	}
+	}	
 
 	public void addShoppingList(String listName) {
 		if (listName == null || listName.isEmpty()) {

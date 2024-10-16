@@ -68,12 +68,22 @@ public class ShoppingListTest {
 	}
 
 	@Test
-	public void testFindArticlesByPrefix() {
+	public void testFindArticlesByName() {
 		ShoppingList list = new ShoppingList("Lista Test");
 		list.addArticle(new Article("Mela", 0.5, 2, "Frutta"));
 		list.addArticle(new Article("Melone", 1.0, 1, "Frutta"));
 		list.addArticle(new Article("Banana", 0.3, 3, "Frutta"));
-		List<Article> result = list.findArticlesByPrefix("Mel");
+		List<Article> result = list.findArticlesByName("Mel");
+		assertEquals(2, result.size());
+	}
+
+	@Test
+	public void testFindArticlesByCategory() {
+		ShoppingList list = new ShoppingList("Lista Test");
+		list.addArticle(new Article("Asparagi", 0.5, 2, "Verdura"));
+		list.addArticle(new Article("Melone", 1.0, 1, "Frutta"));
+		list.addArticle(new Article("Banana", 0.3, 3, "Frutta"));
+		List<Article> result = list.findArticlesByCategory("Frutta");
 		assertEquals(2, result.size());
 	}
 

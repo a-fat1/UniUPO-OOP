@@ -365,7 +365,7 @@ public class ShoppingListGUI {
 
 		String prefix = JOptionPane.showInputDialog(frame, "Inserisci il prefisso da cercare:");
 		if (prefix != null && !prefix.trim().isEmpty()) {
-			List<Article> articles = list.findArticlesByPrefix(prefix.trim());
+			List<Article> articles = list.findArticlesByName(prefix.trim());
 			if (articles.isEmpty()) {
 				JOptionPane.showMessageDialog(frame, "Nessun articolo trovato con il prefisso '" + prefix + "'.");
 			} else {

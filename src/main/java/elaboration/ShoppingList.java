@@ -36,10 +36,20 @@ public class ShoppingList implements Iterable<Article> {
 		}
 	}
 
-	public List<Article> findArticlesByPrefix(String prefix) {
+	public List<Article> findArticlesByName(String prefix) {
 		List<Article> result = new ArrayList<>();
 		for (Article article : articles.values()) {
 			if (article.getName().startsWith(prefix)) {
+				result.add(article);
+			}
+		}
+		return result;
+	}
+
+	public List<Article> findArticlesByCategory(String category) {
+		List<Article> result = new ArrayList<>();
+		for (Article article : articles.values()) {
+			if (article.getCategory().equals(category)) {
 				result.add(article);
 			}
 		}

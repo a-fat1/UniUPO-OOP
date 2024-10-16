@@ -3,37 +3,35 @@ package ui.cli.menu;
 import elaboration.*;
 
 import java.util.List;
-import java.util.Scanner;
 import java.io.IOException;
 
-public class ListMenuCLI {
+public class ArticlesMenuCLI {
     private ListManager manager;
-    private Scanner scanner;
     private ShoppingList list;
+    private InputReader inputReader;
 
-    public ListMenuCLI(ListManager manager, Scanner scanner, ShoppingList list) {
+    public ArticlesMenuCLI(ListManager manager, ShoppingList list, InputReader inputReader) {
         this.manager = manager;
-        this.scanner = scanner;
         this.list = list;
+        this.inputReader = inputReader;
     }
 
     public void start() {
-        String listName = list.getName();
-
         while (true) {
             displayArticles(list);
 
-            System.out.println("\n--- Gestore lista '" + listName + "' ---");
+            System.out.println("\n--- Gestore lista '" + list.getName() + "' ---");
             System.out.println("1. Aggiungi articolo");
             System.out.println("2. Rimuovi articolo");
-            System.out.println("3. Cerca articoli per prefisso");
-            System.out.println("4. Salva lista su file");
-            System.out.println("5. Carica lista da file");
-            System.out.println("6. Torna al menu precedente");
+            System.out.println("3. Ricerca articoli per nome");
+            System.out.println("4. Ricerca articoli per categoria");
+            System.out.println("5. Salva lista su file");
+            System.out.println("6. Carica lista da file");
+            System.out.println("7. Torna al menu precedente");
             System.out.print("\nSeleziona un'opzione: ");
 
             try {
-                switch (scanner.nextLine()) {
+                switch (inputReader.readLine()) {
                     case "1":
                         addArticleToList(list);
                         break;
@@ -41,15 +39,18 @@ public class ListMenuCLI {
                         removeArticleFromList(list);
                         break;
                     case "3":
-                        searchArticlesByPrefix(list);
+                        searchArticlesByName(list);
                         break;
                     case "4":
-                        saveListToFile(list);
+                        searchArticlesByCategory(list);
                         break;
                     case "5":
-                        loadListFromFile(list);
+                        saveListToFile(list);
                         break;
                     case "6":
+                        loadListFromFile(list);
+                        break;
+                    case "7":
                         return;
                     default:
                         System.out.println("Opzione non valida. Riprova.");
@@ -76,20 +77,20 @@ public class ListMenuCLI {
 
 	private void addArticleToList(ShoppingList list) {
         System.out.print("\nNome dell'articolo: ");
-        String articleName = scanner.nextLine();
+        String articleName = inputReader.readLine();
         System.out.print("Costo: ");
-        double cost = Double.parseDouble(scanner.nextLine());
+        double cost = inputReader.readDouble();
         System.out.print("Quantità (predefinita 1): ");
-        String quantityInput = scanner.nextLine();
-        int quantity = quantityInput.isEmpty() ? 1 : Integer.parseInt(quantityInput);
+        int quantity = inputReader.readInt();
+        quantity = (quantity <= 0) ? 1 : quantity;
         System.out.print("Categoria (predefinita 'Non Categorizzati'): ");
-        String category = scanner.nextLine();
+        String category = inputReader.readLine();
         if (category.isEmpty()) {
             category = "Non Categorizzati";
         } else {
             if (!manager.getCategories().contains(category)) {
                 System.out.println("\nCategoria non esistente. Aggiungerla? (s/n)");
-                if (scanner.nextLine().equalsIgnoreCase("s")) {
+                if (inputReader.readLine().equalsIgnoreCase("s")) {
                     manager.addCategory(category);
                 } else {
                     category = "Non Categorizzati";
@@ -103,15 +104,25 @@ public class ListMenuCLI {
     }
 
     private void removeArticleFromList(ShoppingList list) {
+        if(list.getArticles().isEmpty()) {
+            System.out.println("Non ci sono articoli da rimuovere.");
+            return;
+        }
+
         System.out.print("\nNome dell'articolo da rimuovere: ");
-        list.removeArticle(scanner.nextLine());
+        list.removeArticle(inputReader.readLine());
         System.out.println("Articolo rimosso con successo.");
     }
 
-    private void searchArticlesByPrefix(ShoppingList list) {
+    private void searchArticlesByName(ShoppingList list) {
+        if(list.getArticles().isEmpty()) {
+            System.out.println("Non ci sono articoli da ricercare.");
+            return;
+        }
+
         System.out.print("\nInserisci il prefisso da cercare: ");
-        String prefix = scanner.nextLine();
-        List<Article> articles = list.findArticlesByPrefix(prefix);
+        String prefix = inputReader.readLine();
+        List<Article> articles = list.findArticlesByName(prefix);
         if (articles.isEmpty()) {
             System.out.println("Nessun articolo trovato con il prefisso '" + prefix + "'.");
         } else {
@@ -122,9 +133,39 @@ public class ListMenuCLI {
         }
     }
 
+    private void searchArticlesByCategory(ShoppingList list) {
+        if(list.getArticles().isEmpty()) {
+            System.out.println("Non ci sono articoli da ricercare.");
+            return;
+        }
+
+        System.out.print("\nInserisci la categoria da cercare: ");
+        String category = inputReader.readLine();
+    
+        if (!manager.getCategories().contains(category)) {
+            System.out.println("La categoria '" + category + "' non esiste.");
+            return;
+        }
+    
+        List<Article> articles = list.findArticlesByCategory(category);
+        if (articles.isEmpty()) {
+            System.out.println("Nessun articolo trovato nella categoria '" + category + "'.");
+        } else {
+            System.out.println("\nArticoli nella categoria '" + category + "':");
+            for (Article article : articles) {
+                System.out.println("- " + article.getName() + " | Costo: " + article.getCost() + " | Quantità: " + article.getQuantity() + " | Categoria: " + article.getCategory());
+            }
+        }
+    }    
+
     private void saveListToFile(ShoppingList list) {
+        if(list.getArticles().isEmpty()) {
+            System.out.println("Non ci sono articoli da salvare.");
+            return;
+        }
+
         System.out.print("\nInserisci il nome del file per salvare la lista: ");
-        String filename = scanner.nextLine();
+        String filename = inputReader.readLine();
         try {
             list.saveToFile(filename);
             System.out.println("Lista salvata con successo su file '" + filename + "'.");
@@ -135,7 +176,7 @@ public class ListMenuCLI {
 
     private void loadListFromFile(ShoppingList list) {
         System.out.print("\nInserisci il nome del file da cui caricare la lista: ");
-        String filename = scanner.nextLine();
+        String filename = inputReader.readLine();
         try {
             list.loadFromFile(filename);
             System.out.println("Lista caricata con successo dal file '" + filename + "'.");

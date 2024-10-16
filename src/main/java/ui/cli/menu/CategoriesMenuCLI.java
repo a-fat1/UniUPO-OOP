@@ -1,15 +1,15 @@
 package ui.cli.menu;
 
+import elaboration.InputReader;
 import elaboration.ListManager;
-import java.util.Scanner;
 
 public class CategoriesMenuCLI {
     private ListManager manager;
-    private Scanner scanner;
+    private InputReader inputReader;
 
-    public CategoriesMenuCLI(ListManager manager, Scanner scanner) {
+    public CategoriesMenuCLI(ListManager manager, InputReader inputReader) {
         this.manager = manager;
-        this.scanner = scanner;
+        this.inputReader = inputReader;
     }
 
     public void start() {
@@ -21,18 +21,21 @@ public class CategoriesMenuCLI {
             System.out.println("2. Rimuovi categoria");
             System.out.println("3. Torna al menu principale");
             System.out.print("\nSeleziona un'opzione: ");
-
-            switch (scanner.nextLine()) {
-                case "1":
-                    addCategory();
-                    break;
-                case "2":
-                    removeCategory();
-                    break;
-                case "3":
-                    return;
-                default:
-                    System.out.println("Opzione non valida. Riprova.");
+            try {
+                switch (inputReader.readLine()) {
+                    case "1":
+                        addCategory();
+                        break;
+                    case "2":
+                        removeCategory();
+                        break;
+                    case "3":
+                        return;
+                    default:
+                        System.out.println("Opzione non valida. Riprova.");
+                }
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
             }
         }
     }
@@ -50,13 +53,17 @@ public class CategoriesMenuCLI {
 
     private void addCategory() {
         System.out.print("\nInserisci il nome della nuova categoria: ");
-        manager.addCategory(scanner.nextLine());
+        manager.addCategory(inputReader.readLine());
         System.out.println("Categoria aggiunta con successo.");
     }
 
     private void removeCategory() {
+        if (manager.getCategories().isEmpty()) {
+            System.out.println("Nessuna categoria disponibile.");
+            return;
+        }
         System.out.print("\nInserisci il nome della categoria da rimuovere: ");
-        manager.removeCategory(scanner.nextLine());
+        manager.removeCategory(inputReader.readLine());
         System.out.println("Categoria rimossa. Gli articoli sono stati aggiornati a 'Non Categorizzati'.");
     }
 }
