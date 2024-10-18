@@ -1,15 +1,16 @@
-package ui;
-
-import elaboration.*;
+package ui.gui;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import model.*;
+
 import java.util.List;
 import java.io.IOException;
 
 public class ShoppingListGUI {
+	// Gestore delle liste
 	private ListManager manager;
 	private JFrame frame;
 	private DefaultListModel<String> listModel;
@@ -17,45 +18,64 @@ public class ShoppingListGUI {
 	private DefaultListModel<String> articleModel;
 	private JList<String> articleJList;
 	private JTextArea articleDetailsTextArea;
+	private DefaultListModel<String> categoryModel;
+	private JList<String> categoryJList;
 	private JLabel totalArticlesLabel;
 	private JLabel totalCostLabel;
+	private Runnable onReturn;
 
-	public ShoppingListGUI() {
+	public ShoppingListGUI(Runnable onReturn) {
+		this.onReturn = onReturn;
 		manager = new ListManager();
 		createAndShowGUI();
 	}
 
+	// Metodo per creare e mostrare l'interfaccia grafica
 	private void createAndShowGUI() {
-		frame = new JFrame("Gestione Liste della Spesa");
+		frame = new JFrame("GestoreSpesa");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(1000, 600);
 
 		JMenuBar menuBar = new JMenuBar();
 
+		// Menu "File"
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem saveListItem = new JMenuItem("Salva Lista");
 		JMenuItem loadListItem = new JMenuItem("Carica Lista");
 		fileMenu.add(saveListItem);
 		fileMenu.add(loadListItem);
 
+		// Menu "Ricerca"
 		JMenu actionMenu = new JMenu("Ricerca");
-		JMenuItem searchItem = new JMenuItem("Cerca Articoli per Prefisso");
-		actionMenu.add(searchItem);
+		JMenuItem searchItemByName = new JMenuItem("Cerca articoli per prefisso");
+		JMenuItem searchItemByCategory = new JMenuItem("Cerca articoli per categoria");
+		actionMenu.add(searchItemByName);
+		actionMenu.add(searchItemByCategory);
 
-		JMenu categoryMenu = new JMenu("Categorie");
-		JMenuItem addCategoryItem = new JMenuItem("Aggiungi Categoria");
-		JMenuItem removeCategoryItem = new JMenuItem("Rimuovi Categoria");
-		categoryMenu.add(addCategoryItem);
-		categoryMenu.add(removeCategoryItem);
+		// Menu "Esci"
+		JMenu exitMenu = new JMenu("Esci");
+		JMenuItem exitItem = new JMenuItem("Ritorna alla selezione dell'interfaccia");
+		exitItem.addActionListener(e -> {
+			frame.dispose();
+			if (onReturn != null) {
+				onReturn.run();
+			}
+		});
+		exitMenu.add(exitItem);
 
+		// Aggiunta dei menu alla barra del menu
 		menuBar.add(fileMenu);
 		menuBar.add(actionMenu);
-		menuBar.add(categoryMenu);
+		menuBar.add(exitMenu);
 
 		frame.setJMenuBar(menuBar);
 
-		JPanel mainPanel = new JPanel(new BorderLayout());
+		JPanel mainPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.fill = GridBagConstraints.BOTH;
 
+		// Pannello per le liste della spesa
 		JPanel listPanel = new JPanel(new BorderLayout());
 		listPanel.setBorder(BorderFactory.createTitledBorder("Liste della Spesa"));
 
@@ -73,6 +93,14 @@ public class ShoppingListGUI {
 		listPanel.add(listScrollPane, BorderLayout.CENTER);
 		listPanel.add(listButtonPanel, BorderLayout.SOUTH);
 
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.gridheight = 2;
+		gbc.weightx = 0.3;
+		gbc.weighty = 1.0;
+		mainPanel.add(listPanel, gbc);
+
+		// Pannello per gli articoli
 		JPanel articlePanel = new JPanel(new BorderLayout());
 		articlePanel.setBorder(BorderFactory.createTitledBorder("Articoli"));
 
@@ -94,24 +122,62 @@ public class ShoppingListGUI {
 		articleInfoPanel.add(totalCostLabel, BorderLayout.SOUTH);
 
 		articlePanel.add(articleScrollPane, BorderLayout.CENTER);
-		articlePanel.add(articleButtonPanel, BorderLayout.SOUTH);
 		articlePanel.add(articleInfoPanel, BorderLayout.NORTH);
+		articlePanel.add(articleButtonPanel, BorderLayout.SOUTH);
 
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.gridheight = 2;
+		gbc.weightx = 0.4;
+		gbc.weighty = 1.0;
+		mainPanel.add(articlePanel, gbc);
+
+		// Pannello per i dettagli dell'articolo
 		JPanel detailPanel = new JPanel(new BorderLayout());
 		detailPanel.setBorder(BorderFactory.createTitledBorder("Dettagli Articolo"));
 
 		articleDetailsTextArea = new JTextArea();
 		articleDetailsTextArea.setEditable(false);
+		articleDetailsTextArea.setPreferredSize(new Dimension(200, 100));
 		JScrollPane detailScrollPane = new JScrollPane(articleDetailsTextArea);
 
 		detailPanel.add(detailScrollPane, BorderLayout.CENTER);
 
-		mainPanel.add(listPanel, BorderLayout.WEST);
-		mainPanel.add(articlePanel, BorderLayout.CENTER);
-		mainPanel.add(detailPanel, BorderLayout.EAST);
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+		gbc.gridheight = 1;
+		gbc.weightx = 0.3;
+		gbc.weighty = 0.6;
+		mainPanel.add(detailPanel, gbc);
+
+		// Pannello per le categorie
+		JPanel categoryPanel = new JPanel(new BorderLayout());
+		categoryPanel.setBorder(BorderFactory.createTitledBorder("Categorie"));
+
+		categoryModel = new DefaultListModel<>();
+		categoryJList = new JList<>(categoryModel);
+		JScrollPane categoryScrollPane = new JScrollPane(categoryJList);
+
+		JButton addCategoryButton = new JButton("Aggiungi Categoria");
+		JButton removeCategoryButton = new JButton("Rimuovi Categoria");
+
+		JPanel categoryButtonPanel = new JPanel();
+		categoryButtonPanel.add(addCategoryButton);
+		categoryButtonPanel.add(removeCategoryButton);
+
+		categoryPanel.add(categoryScrollPane, BorderLayout.CENTER);
+		categoryPanel.add(categoryButtonPanel, BorderLayout.SOUTH);
+
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		gbc.gridheight = 1;
+		gbc.weightx = 0.3;
+		gbc.weighty = 0.4;
+		mainPanel.add(categoryPanel, gbc);
 
 		frame.getContentPane().add(mainPanel);
 
+		// Associazione degli ActionListener ai bottoni e ai menu
 		addListButton.addActionListener(e -> addShoppingList());
 		removeListButton.addActionListener(e -> removeShoppingList());
 		shoppingListJList.addListSelectionListener(e -> updateArticleList());
@@ -120,18 +186,21 @@ public class ShoppingListGUI {
 		articleJList.addListSelectionListener(e -> updateArticleDetails());
 		saveListItem.addActionListener(e -> saveList());
 		loadListItem.addActionListener(e -> loadList());
-		searchItem.addActionListener(e -> searchArticlesByPrefix());
-		addCategoryItem.addActionListener(e -> addCategory());
-		removeCategoryItem.addActionListener(e -> removeCategory());
+		searchItemByName.addActionListener(e -> searchArticlesByPrefix());
+		searchItemByCategory.addActionListener(e -> searchArticlesByCategory());
+		addCategoryButton.addActionListener(e -> addCategory());
+		removeCategoryButton.addActionListener(e -> removeCategory());
 
 		frame.setVisible(true);
 	}
 
+	// Metodo per aggiungere una nuova categoria
 	private void addCategory() {
 		String category = JOptionPane.showInputDialog(frame, "Inserisci il nome della nuova categoria:");
 		if (category != null && !category.trim().isEmpty()) {
 			try {
 				manager.addCategory(category.trim());
+				categoryModel.addElement(category.trim());
 				JOptionPane.showMessageDialog(frame, "Categoria aggiunta con successo.");
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(frame, "Errore: " + ex.getMessage());
@@ -139,19 +208,24 @@ public class ShoppingListGUI {
 		}
 	}
 
+	// Metodo per rimuovere una categoria
 	private void removeCategory() {
-		String category = JOptionPane.showInputDialog(frame, "Inserisci il nome della categoria da rimuovere:");
+		String category = categoryJList.getSelectedValue();
 		if (category != null && !category.trim().isEmpty()) {
 			try {
 				manager.removeCategory(category.trim());
+				categoryModel.removeElement(category);
 				updateArticleList();
 				JOptionPane.showMessageDialog(frame, "Categoria rimossa con successo.");
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(frame, "Errore: " + ex.getMessage());
 			}
+		} else {
+			JOptionPane.showMessageDialog(frame, "Seleziona una categoria da rimuovere.");
 		}
 	}
 
+	// Metodo per aggiungere una nuova lista della spesa
 	private void addShoppingList() {
 		String listName = JOptionPane.showInputDialog(frame, "Inserisci il nome della nuova lista:");
 		if (listName != null && !listName.trim().isEmpty()) {
@@ -165,6 +239,7 @@ public class ShoppingListGUI {
 		}
 	}
 
+	// Metodo per rimuovere una lista della spesa
 	private void removeShoppingList() {
 		String selectedList = shoppingListJList.getSelectedValue();
 		if (selectedList != null) {
@@ -184,6 +259,7 @@ public class ShoppingListGUI {
 		}
 	}
 
+	// Metodo per aggiornare la lista degli articoli nella lista selezionata
 	private void updateArticleList() {
 		String selectedList = shoppingListJList.getSelectedValue();
 		articleModel.clear();
@@ -206,6 +282,7 @@ public class ShoppingListGUI {
 		}
 	}
 
+	// Metodo per aggiungere un nuovo articolo alla lista selezionata
 	private void addArticle() {
 		String selectedListName = shoppingListJList.getSelectedValue();
 		if (selectedListName == null) {
@@ -215,6 +292,7 @@ public class ShoppingListGUI {
 
 		ShoppingList list = manager.getShoppingList(selectedListName);
 
+		// Pannello di input per inserire i dettagli dell'articolo
 		JPanel inputPanel = new JPanel(new GridLayout(0, 2));
 		JTextField nameField = new JTextField();
 		JTextField costField = new JTextField();
@@ -242,6 +320,7 @@ public class ShoppingListGUI {
 					int addCategory = JOptionPane.showConfirmDialog(frame, "La categoria non esiste. Vuoi aggiungerla?", "Nuova Categoria", JOptionPane.YES_NO_OPTION);
 					if (addCategory == JOptionPane.YES_OPTION) {
 						manager.addCategory(category);
+						categoryModel.addElement(category);
 					} else {
 						category = "Non Categorizzati";
 					}
@@ -260,6 +339,7 @@ public class ShoppingListGUI {
 		}
 	}
 
+	// Metodo per rimuovere un articolo dalla lista selezionata
 	private void removeArticle() {
 		String selectedListName = shoppingListJList.getSelectedValue();
 		String selectedArticleName = articleJList.getSelectedValue();
@@ -281,6 +361,7 @@ public class ShoppingListGUI {
 		}
 	}
 
+	// Metodo per aggiornare i dettagli dell'articolo selezionato
 	private void updateArticleDetails() {
 		String selectedListName = shoppingListJList.getSelectedValue();
 		String selectedArticleName = articleJList.getSelectedValue();
@@ -301,6 +382,7 @@ public class ShoppingListGUI {
 		}
 	}
 
+	// Metodo per salvare una lista della spesa su file
 	private void saveList() {
 		String selectedListName = shoppingListJList.getSelectedValue();
 		if (selectedListName == null) {
@@ -329,6 +411,7 @@ public class ShoppingListGUI {
 		}
 	}
 
+	// Metodo per caricare articoli da un file in una lista della spesa
 	private void loadList() {
 		String selectedListName = shoppingListJList.getSelectedValue();
 		if (selectedListName == null) {
@@ -355,6 +438,7 @@ public class ShoppingListGUI {
 		}
 	}
 
+	// Metodo per cercare articoli per prefisso
 	private void searchArticlesByPrefix() {
 		String selectedListName = shoppingListJList.getSelectedValue();
 		if (selectedListName == null) {
@@ -368,6 +452,30 @@ public class ShoppingListGUI {
 			List<Article> articles = list.findArticlesByName(prefix.trim());
 			if (articles.isEmpty()) {
 				JOptionPane.showMessageDialog(frame, "Nessun articolo trovato con il prefisso '" + prefix + "'.");
+			} else {
+				StringBuilder result = new StringBuilder("Articoli trovati:\n");
+				for (Article article : articles) {
+					result.append("- ").append(article.getName()).append(" | Costo: ").append(article.getCost()).append(" | Quantità: ").append(article.getQuantity()).append(" | Categoria: ").append(article.getCategory()).append("\n");
+				}
+				JOptionPane.showMessageDialog(frame, result.toString());
+			}
+		}
+	}
+
+	// Metodo per cercare articoli per categoria
+	private void searchArticlesByCategory() {
+		String selectedListName = shoppingListJList.getSelectedValue();
+		if (selectedListName == null) {
+			JOptionPane.showMessageDialog(frame, "Seleziona una lista per effettuare la ricerca.");
+			return;
+		}
+		ShoppingList list = manager.getShoppingList(selectedListName);
+	
+		String category = JOptionPane.showInputDialog(frame, "Inserisci la categoria da cercare:");
+		if (category != null && !category.trim().isEmpty()) {
+			List<Article> articles = list.findArticlesByCategory(category.trim());
+			if (articles.isEmpty()) {
+				JOptionPane.showMessageDialog(frame, "Nessun articolo trovato nella categoria '" + category + "'.");
 			} else {
 				StringBuilder result = new StringBuilder("Articoli trovati:\n");
 				for (Article article : articles) {

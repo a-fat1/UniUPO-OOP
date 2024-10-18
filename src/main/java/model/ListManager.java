@@ -1,9 +1,6 @@
-package elaboration;
+package model;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class ListManager {
 	private Map<String, ShoppingList> shoppingLists;
