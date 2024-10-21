@@ -1,6 +1,6 @@
 package ui.cli.menu;
 
-import model.*;
+import model.domain.*;
 
 import java.util.List;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class ArticlesMenuCLI {
 		while (true) {
 			displayArticles(list);
 
-			System.out.println("\n--- Gestore lista '" + list.getName() + "' ---");
+			System.out.println("\n--- Menu lista '" + list.getName() + "' ---");
 			System.out.println("1. Aggiungi articolo");
 			System.out.println("2. Rimuovi articolo");
 			System.out.println("3. Ricerca articoli per nome");

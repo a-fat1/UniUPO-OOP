@@ -1,4 +1,4 @@
-package model;
+package model.domain;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;

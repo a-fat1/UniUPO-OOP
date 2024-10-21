@@ -1,6 +1,8 @@
 package ui.cli.menu;
 
-import model.*;
+import model.domain.InputReader;
+import model.domain.ListManager;
+import model.domain.ShoppingList;
 
 public class ListsMenuCLI {
 	private ListManager manager;

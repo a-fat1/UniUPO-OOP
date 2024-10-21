@@ -1,7 +1,10 @@
 package ui.cli;
 
-import model.*;
-import ui.cli.menu.*;
+import ui.cli.menu.CategoriesMenuCLI;
+import ui.cli.menu.ListsMenuCLI;
+
+import model.domain.InputReader;
+import model.domain.ListManager;
 
 public class MainMenuCLI {
 	private ListManager manager;

@@ -1,7 +1,17 @@
-package model;
+package model.domain;
 
-import java.io.*;
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import java.util.Iterator;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 public class ShoppingList implements Iterable<Article> {
 	private String name;
@@ -18,6 +28,10 @@ public class ShoppingList implements Iterable<Article> {
 	public String getName() {
 		return name;
 	}
+
+	public Article getArticleByName(String articleName) {
+        return articles.get(articleName);
+    }
 
 	public Collection<Article> getArticles() {
 		return articles.values();

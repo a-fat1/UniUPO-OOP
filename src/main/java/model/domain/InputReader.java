@@ -1,7 +1,7 @@
 // Questa classe non fa parte del package model
 // Dovrà essere spostata nel controller della CLI una volta implementato (per bene) il pattern MVC.
 
-package model;
+package model.domain;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

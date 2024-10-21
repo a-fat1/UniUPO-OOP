@@ -1,4 +1,4 @@
-package model;
+package model.domain;
 
 public class Article {
 	private String name;
