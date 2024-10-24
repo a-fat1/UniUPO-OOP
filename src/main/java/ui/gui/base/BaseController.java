@@ -1,4 +1,4 @@
-package ui.gui.controller;
+package ui.gui.base;
 
 import javax.swing.JOptionPane;
 import java.awt.Component;

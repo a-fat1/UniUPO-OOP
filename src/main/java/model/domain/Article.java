@@ -8,7 +8,7 @@ public class Article {
 
 	public Article(String name, double cost, int quantity, String category) {
 		if (name == null || name.isEmpty()) {
-			throw new IllegalArgumentException("Nome dell'articolo non valido.");
+			throw new IllegalArgumentException("nome dell'articolo non valido.");
 		}
 		if (quantity <= 0) {
 			quantity = 1;

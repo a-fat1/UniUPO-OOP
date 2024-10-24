@@ -3,6 +3,9 @@ package ui.gui.view.panel;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+
+import ui.gui.base.BasePanel;
+
 import javax.swing.JList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;

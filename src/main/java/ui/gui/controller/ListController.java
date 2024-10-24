@@ -1,5 +1,6 @@
 package ui.gui.controller;
 
+import ui.gui.base.BaseController;
 import ui.gui.view.panel.ListPanel;
 
 import javax.swing.JOptionPane;

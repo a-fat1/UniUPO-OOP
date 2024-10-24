@@ -1,8 +1,8 @@
 package ui.gui;
 
-import ui.gui.view.MainFrame;
 import model.domain.ListManager;
 import ui.gui.controller.MainController;
+import ui.gui.view.frame.MainFrame;
 
 public class MainGUI {
     public MainGUI(Runnable onReturn) {

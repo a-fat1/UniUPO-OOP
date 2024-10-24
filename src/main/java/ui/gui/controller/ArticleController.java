@@ -3,7 +3,7 @@ package ui.gui.controller;
 import model.domain.Article;
 import model.domain.ListManager;
 import model.domain.ShoppingList;
-
+import ui.gui.base.BaseController;
 import ui.gui.view.input.ArticleInputDialog;
 import ui.gui.view.panel.ArticlePanel;
 import ui.gui.view.panel.DetailPanel;

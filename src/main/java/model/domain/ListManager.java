@@ -17,18 +17,18 @@ public class ListManager {
 
 	public void addCategory(String category) {
 		if (category == null || category.isEmpty()) {
-			throw new IllegalArgumentException("Nome della categoria non valido.");
+			throw new IllegalArgumentException("nome della categoria non valido.");
 		}
 		categories.add(category);
 	}
 
 	public void removeCategory(String category) {
 		if ("Non Categorizzati".equals(category)) {
-			throw new IllegalArgumentException("Non è possibile rimuovere la categoria 'Non Categorizzati'.");
+			throw new IllegalArgumentException("non è possibile rimuovere la categoria 'Non Categorizzati'.");
 		}
 	
 		if (!categories.remove(category)) {
-			throw new IllegalArgumentException("Categoria non esistente.");
+			throw new IllegalArgumentException("categoria non esistente.");
 		}
 	
 		for (ShoppingList list : shoppingLists.values()) {
@@ -38,24 +38,24 @@ public class ListManager {
 
 	public void addShoppingList(String listName) {
 		if (listName == null || listName.isEmpty()) {
-			throw new IllegalArgumentException("Nome della lista non valido.");
+			throw new IllegalArgumentException("nome della lista non valido.");
 		}
 		if (shoppingLists.containsKey(listName)) {
-			throw new IllegalArgumentException("Lista già esistente.");
+			throw new IllegalArgumentException("lista già esistente.");
 		}
 		shoppingLists.put(listName, new ShoppingList(listName));
 	}
 
 	public void removeShoppingList(String listName) {
 		if (shoppingLists.remove(listName) == null) {
-			throw new IllegalArgumentException("Lista non trovata.");
+			throw new IllegalArgumentException("lista non trovata.");
 		}
 	}
 
 	public ShoppingList getShoppingList(String listName) {
 		ShoppingList list = shoppingLists.get(listName);
 		if (list == null) {
-			throw new IllegalArgumentException("Lista non trovata.");
+			throw new IllegalArgumentException("lista non trovata.");
 		}
 		return list;
 	}

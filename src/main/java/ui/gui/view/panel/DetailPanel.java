@@ -1,6 +1,9 @@
 package ui.gui.view.panel;
 
 import javax.swing.JTextArea;
+
+import ui.gui.base.BasePanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import java.awt.BorderLayout;

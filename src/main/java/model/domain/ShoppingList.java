@@ -19,7 +19,7 @@ public class ShoppingList implements Iterable<Article> {
 
 	public ShoppingList(String name) {
 		if (name == null || name.isEmpty()) {
-			throw new IllegalArgumentException("Nome della lista non valido.");
+			throw new IllegalArgumentException("nome della lista non valido.");
 		}
 		this.name = name;
 		articles = new HashMap<>();
@@ -39,14 +39,14 @@ public class ShoppingList implements Iterable<Article> {
 
 	public void addArticle(Article article) {
 		if (article == null) {
-			throw new IllegalArgumentException("Articolo non valido.");
+			throw new IllegalArgumentException("articolo non valido.");
 		}
 		articles.put(article.getName(), article);
 	}
 
 	public void removeArticle(String articleName) {
 		if (articles.remove(articleName) == null) {
-			throw new IllegalArgumentException("Articolo non trovato.");
+			throw new IllegalArgumentException("articolo non trovato.");
 		}
 	}
 

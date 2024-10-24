@@ -1,7 +1,4 @@
-// Questa classe non fa parte del package model
-// Dovrà essere spostata nel controller della CLI una volta implementato (per bene) il pattern MVC.
-
-package model.domain;
+package model.util;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,7 +12,7 @@ public class InputReader {
 		this.reader = new BufferedReader(new InputStreamReader(input));
 	}
 
-	public String readLine() {
+	public String getString() {
 		try {
 			return reader.readLine();
 		} catch (IOException e) {
@@ -23,19 +20,33 @@ public class InputReader {
 		}
 	}
 
-	public int readInt() {
+	public int getInt() {
 		try {
-			return Integer.parseInt(readLine());
+			return Integer.parseInt(getString());
 		} catch (NumberFormatException e) {
 			throw new RuntimeException("valore intero invalido", e);
 		}
 	}
 
-	public double readDouble() {
+	public double getDouble() {
 		try {
-			return Double.parseDouble(readLine());
+			return Double.parseDouble(getString());
 		} catch (NumberFormatException e) {
 			throw new RuntimeException("valore decimale invalido", e);
 		}
+	}
+
+	public boolean isValidAnswer(String answer) {
+		return answer.equalsIgnoreCase("s")
+            || answer.equalsIgnoreCase("si")
+            || answer.equalsIgnoreCase("sì")
+            || answer.equalsIgnoreCase("n")
+            || answer.equalsIgnoreCase("no");
+	}
+
+	public boolean isPositiveAnswer(String answer) {
+		return answer.equalsIgnoreCase("s")
+            || answer.equalsIgnoreCase("si")
+            || answer.equalsIgnoreCase("sì");
 	}
 }

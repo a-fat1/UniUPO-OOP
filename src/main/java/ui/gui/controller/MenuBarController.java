@@ -1,5 +1,7 @@
 package ui.gui.controller;
 
+import ui.gui.base.BaseController;
+import ui.gui.view.bar.FileChooser;
 import ui.gui.view.bar.MenuBar;
 import model.domain.Article;
 import model.domain.ShoppingList;
@@ -49,7 +51,7 @@ public class MenuBarController extends BaseController {
             return;
         }
 
-        JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new FileChooser();
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("File di testo (*.txt)", "txt"));
 
         int option = fileChooser.showSaveDialog(frame);
@@ -74,7 +76,7 @@ public class MenuBarController extends BaseController {
             return;
         }
 
-        JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new FileChooser();
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("File di testo (*.txt)", "txt"));
 
         int option = fileChooser.showOpenDialog(frame);

@@ -1,7 +1,7 @@
 package ui.gui.controller;
 
 import model.domain.ListManager;
-import ui.gui.view.MainFrame;
+import ui.gui.view.frame.MainFrame;
 
 public class MainController {
     private MainFrame mainFrame;

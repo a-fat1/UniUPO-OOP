@@ -1,5 +1,6 @@
 package ui.gui.controller;
 
+import ui.gui.base.BaseController;
 import ui.gui.view.panel.CategoryPanel;
 import model.domain.ListManager;
 
@@ -20,7 +21,6 @@ public class CategoryController extends BaseController implements ActionListener
     }
 
     private void addListeners() {
-        // Aggiungiamo il controller come ActionListener ai pulsanti
         categoryPanel.addCategoryButton.addActionListener(this);
         categoryPanel.removeCategoryButton.addActionListener(this);
     }
@@ -66,7 +66,6 @@ public class CategoryController extends BaseController implements ActionListener
             try {
                 manager.removeCategory(category.trim());
                 categoryPanel.getCategoryModel().removeElement(category);
-                // Potresti dover aggiornare gli articoli che appartenevano a questa categoria
                 showMessage(categoryPanel, "Categoria rimossa con successo.");
             } catch (Exception ex) {
                 showError(categoryPanel, "Errore: " + ex.getMessage());
