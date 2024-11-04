@@ -1,12 +1,11 @@
 package ui.gui.view.panel;
 
-import javax.swing.JTextArea;
-
 import ui.gui.base.BasePanel;
 
+import java.awt.BorderLayout;
+import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
-import java.awt.BorderLayout;
 
 public class DetailPanel extends BasePanel {
     private JTextArea articleDetailsTextArea;
@@ -18,7 +17,7 @@ public class DetailPanel extends BasePanel {
     @Override
     protected void initializePanel() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder("Dettagli Articolo"));
+        setBorder(BorderFactory.createTitledBorder("Dettagli articolo"));
 
         articleDetailsTextArea = new JTextArea();
         articleDetailsTextArea.setEditable(false);

@@ -37,7 +37,7 @@ public class ArticlePanel extends BasePanel {
         JScrollPane articleScrollPane = new JScrollPane(articleJList);
 
         totalArticlesLabel = new JLabel("Totale articoli: 0");
-        totalCostLabel = new JLabel("Costo totale: 0.0");
+        totalCostLabel = new JLabel("Costo totale: 0,00");
 
         // JPanel info articoli
         JPanel infoPanel = new JPanel(new GridLayout(2, 1));
@@ -45,8 +45,8 @@ public class ArticlePanel extends BasePanel {
         infoPanel.add(totalCostLabel);
 
         // Pulsanti per aggiungere e rimuovere articoli
-        addArticleButton = new JButton("Aggiungi Articolo");
-        removeArticleButton = new JButton("Rimuovi Articolo");
+        addArticleButton = new JButton("Aggiungi articolo");
+        removeArticleButton = new JButton("Rimuovi articolo");
 
         // JPanel per i pulsanti
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

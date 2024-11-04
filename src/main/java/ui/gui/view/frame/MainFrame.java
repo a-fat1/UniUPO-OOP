@@ -1,16 +1,13 @@
 package ui.gui.view.frame;
 
+import ui.gui.view.panel.*;
+import ui.gui.view.bar.MenuBar;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import ui.gui.view.bar.MenuBar;
-import ui.gui.view.panel.ArticlePanel;
-import ui.gui.view.panel.CategoryPanel;
-import ui.gui.view.panel.DetailPanel;
-import ui.gui.view.panel.ListPanel;
 
 public class MainFrame extends JFrame {
     public MenuBar menuBar;

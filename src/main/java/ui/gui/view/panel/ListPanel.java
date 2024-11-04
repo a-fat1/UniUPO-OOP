@@ -1,17 +1,16 @@
 package ui.gui.view.panel;
 
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import ui.gui.base.BasePanel;
-
-import javax.swing.BorderFactory;
 
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
+
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 
 public class ListPanel extends BasePanel {
     private DefaultListModel<String> listModel;
@@ -26,15 +25,15 @@ public class ListPanel extends BasePanel {
     @Override
     protected void initializePanel() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder("Liste della Spesa"));
+        setBorder(BorderFactory.createTitledBorder("Liste della spesa"));
 
         listModel = new DefaultListModel<>();
         shoppingListJList = new JList<>(listModel);
         JScrollPane listScrollPane = new JScrollPane(shoppingListJList);
 
         // Pulsanti per aggiungere e rimuovere liste
-        addListButton = new JButton("Aggiungi Lista");
-        removeListButton = new JButton("Rimuovi Lista");
+        addListButton = new JButton("Aggiungi lista");
+        removeListButton = new JButton("Rimuovi lista");
 
         // JPanel per i pulsanti
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

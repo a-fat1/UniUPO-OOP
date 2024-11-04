@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-	// Use JUnit test framework (JUnit 5) - dynamic version for JUnit
+	// Use JUnit test framework (JUnit 5) - dynamic version for JUnit.
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.+'
 }
 
@@ -18,6 +18,19 @@ java {
 		// Apply a specific Java toolchain to ease working on different environments.
 		languageVersion = JavaLanguageVersion.of(21)
 	}
+}
+
+javadoc {
+	// Include both main and test sources in the Javadoc generation.
+	source = sourceSets.main.allJava + sourceSets.test.allJava
+	// Include both main and test classpaths to avoid import errors in test classes.
+    classpath = sourceSets.main.compileClasspath + sourceSets.test.compileClasspath
+	// Set the directory where the unified Javadoc will be stored.
+	destinationDir = file("docs/javadoc")
+
+	// Set Javadoc options.
+	options.memberLevel = JavadocMemberLevel.PROTECTED
+	options.links("https://docs.oracle.com/en/java/javase/21/docs/api/")
 }
 
 test {

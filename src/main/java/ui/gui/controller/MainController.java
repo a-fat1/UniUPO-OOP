@@ -1,6 +1,6 @@
 package ui.gui.controller;
 
-import model.domain.ListManager;
+import model.ListManager;
 import ui.gui.view.frame.MainFrame;
 
 public class MainController {
@@ -8,10 +8,10 @@ public class MainController {
     private ListManager manager;
     private Runnable onReturn;
 
-    private ListController listController;
-    private ArticleController articleController;
-    private CategoryController categoryController;
-    private MenuBarController menuBarController;
+    // private ListController listController;
+    // private ArticleController articleController;
+    // private CategoryController categoryController;
+    // private MenuBarController menuBarController;
 
     public MainController(MainFrame mainFrame, ListManager manager, Runnable onReturn) {
         this.mainFrame = mainFrame;
@@ -22,13 +22,13 @@ public class MainController {
     }
 
     private void initializeControllers() {
-        listController = new ListController(mainFrame.listPanel, manager);
-        articleController = new ArticleController(mainFrame.articlePanel, mainFrame.detailPanel, manager);
-        categoryController = new CategoryController(mainFrame.categoryPanel, manager);
-        menuBarController = new MenuBarController(mainFrame.menuBar, mainFrame, onReturn);
+        // listController = new ListController(mainFrame.listPanel, manager);
+        // articleController = new ArticleController(mainFrame.articlePanel, mainFrame.detailPanel, manager);
+        // categoryController = new CategoryController(mainFrame.categoryPanel, manager);
+        // menuBarController = new MenuBarController(mainFrame.menuBar, mainFrame, onReturn);
 
-        listController.setArticleController(articleController);
-        articleController.setCategoryController(categoryController);
-        menuBarController.setListController(listController);
+        // listController.setArticleController(articleController);
+        // articleController.setCategoryController(categoryController);
+        // menuBarController.setListController(listController);
     }
 }

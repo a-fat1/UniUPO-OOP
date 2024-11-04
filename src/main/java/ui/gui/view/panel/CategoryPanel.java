@@ -1,17 +1,16 @@
 package ui.gui.view.panel;
 
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import ui.gui.base.BasePanel;
-
-import javax.swing.BorderFactory;
 
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
+
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 
 public class CategoryPanel extends BasePanel {
     private DefaultListModel<String> categoryModel;
@@ -33,8 +32,8 @@ public class CategoryPanel extends BasePanel {
         JScrollPane categoryScrollPane = new JScrollPane(categoryJList);
 
         // Pulstanti per aggiungere e rimuovere categorie
-        addCategoryButton = new JButton("Aggiungi Categoria");
-        removeCategoryButton = new JButton("Rimuovi Categoria");
+        addCategoryButton = new JButton("Aggiungi categoria");
+        removeCategoryButton = new JButton("Rimuovi categoria");
 
         // JPanel per i pulsanti
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
