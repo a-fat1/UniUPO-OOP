@@ -166,6 +166,47 @@ public class ShoppingListTest {
 		assertTrue(shoppingList.getArticles().isEmpty());
 	}
 
+	/** Verifica che venga lanciata InvalidInputException quando la stringa di ricerca è nulla o vuota. */
+	@Test
+	public void testFindArticlesWithNullOrEmptySearchString() {
+		// Test per stringa di ricerca nulla
+		Exception exceptionNull = assertThrows(InvalidInputException.class, () -> {
+			shoppingList.findArticles(null, false);
+		});
+		assertEquals("stringa di ricerca non valida.", exceptionNull.getMessage());
+
+		// Test per stringa di ricerca vuota
+		Exception exceptionEmpty = assertThrows(InvalidInputException.class, () -> {
+			shoppingList.findArticles("", false);
+		});
+		assertEquals("stringa di ricerca non valida.", exceptionEmpty.getMessage());
+	}
+
+	/**
+	 * Verifica che la ricerca non sia sensibile alla differenza tra maiuscole e minuscole
+	 * sia per il nome che per la categoria.
+	 *
+	 * @throws InvalidInputException se l'articolo non è valido.
+	 * @throws ArticleNotFoundException se non ci sono articoli che corrispondono al criterio di ricerca.
+	 */
+	@Test
+	public void testFindArticlesCaseInsensitive() throws InvalidInputException, ArticleNotFoundException {
+		Article articleByName = new Article("Banana", 0.2, 5, "Frutta");
+		Article articleByCategory = new Article("Latte", 1.5, 2, "LATTICINI");
+		shoppingList.addArticle(articleByName);
+		shoppingList.addArticle(articleByCategory);
+
+		// Verifica che la ricerca per nome "bAn" sia insensibile al case
+		List<Article> nameResults = shoppingList.findArticles("bAn", false);
+		assertEquals(1, nameResults.size());
+		assertEquals(articleByName, nameResults.get(0));
+
+		// Verifica che la ricerca per categoria "latticini" sia insensibile al case
+		List<Article> categoryResults = shoppingList.findArticles("latticini", true);
+		assertEquals(1, categoryResults.size());
+		assertEquals(articleByCategory, categoryResults.get(0));
+	}
+
 	/**
 	 * Verifica che sia possibile trovare articoli per prefisso con successo.
 	 *

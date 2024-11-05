@@ -39,7 +39,9 @@ public class UIHandlerMenu extends BaseMenu {
 					}
 					break;
 				case "3":
-					showGoodbye();
+					if (confirmQuestion("Terminare il programma?")) {
+						exitProgram();
+					}
 					break;
 				default:
 					showInvalidOption();
@@ -70,32 +72,42 @@ public class UIHandlerMenu extends BaseMenu {
 	}
 
 	/**
-	 * Avvia l'interfaccia grafica (GUI) e gestisce la sincronizzazione per attendere
-	 * la chiusura della GUI prima di tornare al menu principale.
+	 * Avvia l'interfaccia grafica (GUI) e mette in attesa l'esecuzione della CLI fino alla chiusura della GUI.
 	 * 
+	 * Sospende il flusso della CLI e avvia la GUI in una nuova finestra. Se dalla GUI
+	 * si seleziona l'opzione per tornare al menu principale, l'esecuzione della CLI riprende.
+	 * In caso di chiusura della GUI (click sulla X), il programma termina.
+	 *
 	 * @throws InterruptedException se il thread viene interrotto durante l'attesa.
 	 */
 	private void startGUI() throws InterruptedException{
 		showMessage("\nPer terminare il programma, chiudi la finestra dell'interfaccia grafica.");
 		showMessage("Per tornare al terminale, clicca su Esci --> Ritorna alla selezione dell'interfaccia.");
+		showMessage("Una volta terminata l'interfaccia grafica, tutte le liste non salvate andranno perse.");
 
 		showMessage("\nAvvio dell'interfaccia grafica...");
 		final Object lock = new Object();
+		final boolean[] isTerminating = {false};
 
 		// Sincronizzazione per attendere la chiusura della GUI prima di proseguire
 		synchronized (lock) {
 			SwingUtilities.invokeLater(() -> {
-				new MainGUI(() -> {
-					// Notifica al thread principale che la GUI è stata chiusa
+				new MainGUI((Boolean terminating) -> {
+					isTerminating[0] = terminating;
+
 					synchronized (lock) {
 						lock.notify();
 					}
 				});
 			});
-			// Attende che la GUI sia chiusa
 			lock.wait();
 		}
 
-		showMessage("\nInterfaccia grafica terminata.\nRitorno al menu dell'interfaccia...");
+		showMessage("Interfaccia grafica terminata.");
+		if (isTerminating[0]) {
+			exitProgram();
+		} else {
+			showMessage("\nRitorno al menu dell'interfaccia...");
+		}
 	}
 }

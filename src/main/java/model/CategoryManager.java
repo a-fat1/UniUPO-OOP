@@ -57,7 +57,7 @@ public class CategoryManager {
 	 */
 	public void removeCategory(String category) throws InvalidInputException, CategoryNotFoundException {
 		if (Article.DEFAULT_CATEGORY.equals(category)) {
-			throw new InvalidInputException("non è possibile rimuovere la categoria '" + Article.DEFAULT_CATEGORY + "''.");
+			throw new InvalidInputException("non è possibile rimuovere la categoria '" + Article.DEFAULT_CATEGORY + "'.");
 		}
 		if (!categories.remove(category)) {
 			throw new CategoryNotFoundException("la categoria non esiste.");

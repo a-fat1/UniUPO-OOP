@@ -178,7 +178,7 @@ public class ShoppingMenu extends BaseMenu {
 	 * @param searchForCategory true per cercare per categoria, false per cercare per nome.
 	 * @throws ArticleNotFoundException se non ci sono articoli corrispondenti alla ricerca.
 	 */
-	private void searchArticlesInList(boolean searchForCategory) throws ArticleNotFoundException {
+	private void searchArticlesInList(boolean searchForCategory) throws ArticleNotFoundException, InvalidInputException {
 		if (!isCollectionEmpty(shoppingList.getArticles(), "Non ci sono articoli da ricercare.")) {
 			List<Article> articles = shoppingList.findArticles(searchForCategory ? readString("Inserisci la categoria: ") : readString("Inserisci il prefisso da cercare: "), searchForCategory);
 			displayItems(articles, "\nRisultato ricerca:", null, true);

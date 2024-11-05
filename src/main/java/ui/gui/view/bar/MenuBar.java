@@ -9,6 +9,7 @@ public class MenuBar extends JMenuBar {
     public JMenuItem loadListItem;
     public JMenuItem searchItemByName;
     public JMenuItem searchItemByCategory;
+    public JMenuItem clearList;
     public JMenuItem exitItem;
 
     public MenuBar() {
@@ -26,13 +27,15 @@ public class MenuBar extends JMenuBar {
         searchMenu.add(searchItemByName);
         searchMenu.add(searchItemByCategory);
 
-        // Menu "Esci"
-        JMenu exitMenu = new JMenu("Esci");
+        // Menu "Altro"
+        JMenu miscMenu = new JMenu("Altro");
+        clearList = new JMenuItem("Rimuovi tutti gli articoli");
         exitItem = new JMenuItem("Ritorna alla selezione dell'interfaccia");
-        exitMenu.add(exitItem);
+        miscMenu.add(clearList);
+        miscMenu.add(exitItem);
 
         add(fileMenu);
         add(searchMenu);
-        add(exitMenu);
+        add(miscMenu);
     }
 }

@@ -106,16 +106,9 @@ public abstract class BaseMenu {
 		showMessage("Opzione non valida. Riprova.");
 	}
 
-	/** Mostra un messaggio di addio e chiede conferma prima di chiudere il programma. */
-	protected void showGoodbye() {
-		if (confirmQuestion("\nTutte le modifiche alle liste e alle categorie\nnon salvate andranno perdute. Terminare il programma?")) {
-			showMessage("\nArrivederci!\n");
-			exitProgram();
-		}
-	}
-
 	/** Chiude lo scanner e termina l'esecuzione del programma. */
 	protected void exitProgram() {
+		showMessage("\nArrivederci!\n");
 		closeScanner();
 		System.exit(0);
 	}

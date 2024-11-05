@@ -19,14 +19,12 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         super("GestoreSpesa");
         setSize(1000, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         menuBar = new MenuBar();
         setJMenuBar(menuBar);
-
+        
         createMainPanel();
-
-        setVisible(true);
     }
 
     private void createMainPanel() {

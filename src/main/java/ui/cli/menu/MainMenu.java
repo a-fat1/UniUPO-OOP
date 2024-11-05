@@ -49,7 +49,9 @@ public class MainMenu extends BaseMenu {
 					}
 					break;
 				case "4":
-					showGoodbye();
+					if (confirmQuestion("\nTutte le modifiche alle liste e alle categorie\nnon salvate andranno perdute. Terminare il programma?")) {
+						exitProgram();
+					}
 					break;
 				default:
 					showInvalidOption();

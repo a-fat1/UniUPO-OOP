@@ -1,29 +1,30 @@
 package ui.gui;
 
 import ui.gui.view.frame.MainFrame;
+
+import java.util.function.Consumer;
+
 import ui.gui.controller.MainController;
 
-import model.ListManager;
-
 public class MainGUI {
-    public MainGUI(Runnable onReturn) {
-        // Crea il modello
-        ListManager listManager = new ListManager();
-
+    public MainGUI(Consumer<Boolean> onReturn) {
         // Crea la vista
         MainFrame mainFrame = new MainFrame();
 
         // Crea il controller principale
-        new MainController(mainFrame, listManager, onReturn);
+        new MainController(mainFrame, onReturn);
 
         // Aggiunge un WindowListener per notificare quando la finestra viene chiusa
         mainFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
-            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 if (onReturn != null) {
-                    onReturn.run();
+                    onReturn.accept(true);
                 }
+                mainFrame.dispose();
             }
         });
+
+        mainFrame.setVisible(true);
     }
 }

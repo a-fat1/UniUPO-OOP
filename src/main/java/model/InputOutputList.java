@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class InputOutputList {
 	/** Il nome della directory dove vengono salvate le liste. */
-	private static final String DIRECTORY_NAME = "lists";
+	private static final String DEFAULT_DIR = "lists";
 
 	/**
 	 * Salva una lista della spesa in un file specificato.
@@ -99,15 +99,15 @@ public class InputOutputList {
 	 * @throws FileOperationException se la directory non può essere creata o se esiste ma non è una cartella.
 	 */
 	public String checkListsDir() throws FileOperationException {
-		File directory = new File(DIRECTORY_NAME);
+		File directory = new File(DEFAULT_DIR);
 		if (!directory.exists()) {
 			if (!directory.mkdir()) {
-				throw new FileOperationException("impossibile creare la cartella '" + DIRECTORY_NAME + "'.");
+				throw new FileOperationException("impossibile creare la cartella '" + DEFAULT_DIR + "'.");
 			}
 		} else if (!directory.isDirectory()) {
-			throw new FileOperationException("'" + DIRECTORY_NAME + "'' esiste ma non è una cartella.");
+			throw new FileOperationException("'" + DEFAULT_DIR + "'' esiste ma non è una cartella.");
 		}
 
-		return DIRECTORY_NAME + "/";
+		return DEFAULT_DIR + "/";
 	}
 }

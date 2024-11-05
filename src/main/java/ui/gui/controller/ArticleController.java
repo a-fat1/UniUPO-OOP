@@ -1,154 +1,171 @@
-// package ui.gui.controller;
+package ui.gui.controller;
 
-// import model.Article;
-// import model.ListManager;
-// import model.ShoppingList;
-// import ui.gui.base.BaseController;
-// import ui.gui.view.input.ArticleInputDialog;
-// import ui.gui.view.panel.ArticlePanel;
-// import ui.gui.view.panel.DetailPanel;
+import model.Article;
+import model.ListManager;
+import model.ShoppingList;
 
-// import javax.swing.JOptionPane;
+import model.exceptions.io.InvalidInputException;
+import model.exceptions.domain.ListNotFoundException;
+import model.exceptions.domain.ArticleNotFoundException;
 
-// import java.awt.event.ActionEvent;
-// import java.awt.event.ActionListener;
+import ui.gui.base.BaseController;
+import ui.gui.view.input.ArticleInputDialog;
+import ui.gui.view.panel.ArticlePanel;
+import ui.gui.view.panel.DetailPanel;
 
-// public class ArticleController extends BaseController implements ActionListener {
-//     private ArticlePanel articlePanel;
-//     private DetailPanel detailPanel;
-//     private ListManager manager;
-//     private CategoryController categoryController;
-//     private ShoppingList currentList;
+import javax.swing.JOptionPane;
 
-//     public ArticleController(ArticlePanel articlePanel, DetailPanel detailPanel, ListManager manager) {
-//         this.articlePanel = articlePanel;
-//         this.detailPanel = detailPanel;
-//         this.manager = manager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-//         addListeners();
-//     }
+import java.util.Map;
 
-//     public void setCategoryController(CategoryController categoryController) {
-//         this.categoryController = categoryController;
-//     }
+public class ArticleController extends BaseController implements ActionListener {
+    private ArticlePanel articlePanel;
+    private DetailPanel detailPanel;
+    private ListManager listManager;
+    private CategoryController categoryController;
+    private ShoppingList currentList;
 
-//     private void addListeners() {
-//         articlePanel.getArticleJList().addListSelectionListener(e -> {
-//             if (!e.getValueIsAdjusting()) {
-//                 updateArticleDetails();
-//             }
-//         });
+    public ArticleController(ArticlePanel articlePanel, DetailPanel detailPanel, ListManager listManager, CategoryController categoryController) {
+        this.articlePanel = articlePanel;
+        this.detailPanel = detailPanel;
+        this.listManager = listManager;
+        this.categoryController = categoryController;
 
-//         // Listener per i bottoni
-//         articlePanel.addArticleButton.addActionListener(this);
-//         articlePanel.removeArticleButton.addActionListener(this);
-//     }
+        addListeners();
+    }
 
-//     @Override
-//     public void actionPerformed(ActionEvent e) {
-//         Object source = e.getSource();
+    private void addListeners() {
+        articlePanel.getArticleJList().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateArticleDetails();
+            }
+        });
 
-//         if (source == articlePanel.addArticleButton) {
-//             addArticle();
-//         } else if (source == articlePanel.removeArticleButton) {
-//             removeArticle();
-//         }
-//     }
+        // Listener per i bottoni
+        articlePanel.addArticleButton.addActionListener(this);
+        articlePanel.removeArticleButton.addActionListener(this);
+    }
 
-//     public void updateArticleList(String listName) {
-//         articlePanel.getArticleModel().clear();
-//         detailPanel.getArticleDetailsTextArea().setText("");
-//         if (listName != null) {
-//             currentList = manager.getShoppingList(listName);
-//             for (Article article : currentList) {
-//                 articlePanel.getArticleModel().addElement(article.getName());
-//             }
-//             updateArticleInfo();
-//         } else {
-//             currentList = null;
-//             updateArticleInfo();
-//         }
-//     }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
 
-//     private void updateArticleInfo() {
-//         if (currentList != null) {
-//             articlePanel.getTotalArticlesLabel().setText("Totale articoli: " + currentList.getTotalQuantity());
-//             articlePanel.getTotalCostLabel().setText("Costo totale: " + String.format("%.2f", currentList.getTotalCost()));
-//         } else {
-//             articlePanel.getTotalArticlesLabel().setText("Totale articoli: 0");
-//             articlePanel.getTotalCostLabel().setText("Costo totale: 0,00");
-//         }
-//     }
+        if (source == articlePanel.addArticleButton) {
+            addArticle();
+        } else if (source == articlePanel.removeArticleButton) {
+            removeArticle();
+        }
+    }
 
-//     public void addArticle() {
-//         if (currentList == null) {
-//             showMessage(articlePanel, "Seleziona una lista a cui aggiungere l'articolo.");
-//             return;
-//         }
+    public void updateArticleList(String listName) {
+        articlePanel.getArticleModel().clear();
+        detailPanel.getArticleDetailsTextArea().setText("");
+        if (listName != null) {
+            try {
+                currentList = listManager.getShoppingList(listName);
+                for (Article article : currentList) {
+                    articlePanel.getArticleModel().addElement(article.getName());
+                }
+                updateArticleInfo();
+            } catch (ListNotFoundException ex) {
+                showError(articlePanel, "Lista mancante", "Errore: " + ex.getMessage());
+                currentList = null;
+                updateArticleInfo();
+            }
+        } else {
+            currentList = null;
+            updateArticleInfo();
+        }
+    }
 
-//         ArticleInputDialog dialog = new ArticleInputDialog(null);
-//         dialog.setVisible(true);
+    private void updateArticleInfo() {
+        if (currentList != null) {
+            Map<String, Object> totals = currentList.getTotalFromList();
+            int totalQuantity = (int) totals.get(ShoppingList.KEY_QUANTITY);
+            double totalCost = (double) totals.get(ShoppingList.KEY_COST);
+            articlePanel.getTotalArticlesLabel().setText("Totale articoli: " + totalQuantity);
+            articlePanel.getTotalCostLabel().setText("Costo totale: " + String.format("%.2f", totalCost));
+        } else {
+            articlePanel.getTotalArticlesLabel().setText("Totale articoli: 0");
+            articlePanel.getTotalCostLabel().setText("Costo totale: 0,00");
+        }
+    }
 
-//         if (dialog.isConfirmed()) {
-//             Article article = dialog.getArticle();
-//             try {
-//                 if (!manager.getCategories().contains(article.getCategory())) {
-//                     int addCategory = JOptionPane.showConfirmDialog(articlePanel, "La categoria non esiste. Vuoi aggiungerla?", "Nuova Categoria", JOptionPane.YES_NO_OPTION);
-//                     if (addCategory == JOptionPane.YES_OPTION) {
-//                         manager.addCategory(article.getCategory());
-//                         categoryController.updateCategories();
-//                     } else {
-//                         article.setCategory("Non Categorizzati");
-//                     }
-//                 }
-//                 currentList.addArticle(article);
-//                 articlePanel.getArticleModel().addElement(article.getName());
-//                 updateArticleInfo();
-//                 showMessage(articlePanel, "Articolo aggiunto con successo.");
-//             } catch (Exception ex) {
-//                 showError(articlePanel, "Errore: " + ex.getMessage());
-//             }
-//         }
-//     }
+    public void addArticle() {
+        if (currentList == null) {
+            showMessage(articlePanel, "Nessuna lista selezionata", "Seleziona una lista a cui aggiungere l'articolo.");
+            return;
+        }
+    
+        ArticleInputDialog dialog = new ArticleInputDialog(null);
+        dialog.setVisible(true);
+    
+        if (dialog.isConfirmed()) {
+            try {
+                Article article = dialog.getArticle();
+    
+                // Verifica se la categoria esiste utilizzando CategoryController
+                if (!categoryController.getAllCategories().contains(article.getCategory())) {
+                    int addCategory = JOptionPane.showConfirmDialog(articlePanel, "La categoria non esiste. Vuoi aggiungerla?", "Nuova Categoria", JOptionPane.YES_NO_OPTION);
+                    if (addCategory == JOptionPane.YES_OPTION) {
+                        categoryController.addCategory(article.getCategory());
+                        categoryController.updateCategories(); // Aggiorna le categorie nella vista
+                    } else {
+                        article.setCategory(Article.DEFAULT_CATEGORY);
+                        showMessage(articlePanel, "Categoria predefinita", "L'articolo verrà salvato con la categoria predefinita.");
+                    }
+                }
+    
+                currentList.addArticle(article);
+                articlePanel.getArticleModel().addElement(article.getName());
+                updateArticleInfo();
+                showMessage(articlePanel, "Articolo aggiunto", "Articolo aggiunto con successo.");
+            } catch (InvalidInputException ex) {
+                showError(articlePanel, "Errore articolo", "Errore: " + ex.getMessage());
+            }
+        }
+    }    
 
-//     public void removeArticle() {
-//         if (currentList == null) {
-//             showMessage(articlePanel, "Seleziona una lista da cui rimuovere l'articolo.");
-//             return;
-//         }
+    public void removeArticle() {
+        if (currentList == null) {
+            showMessage(articlePanel, "Nessuna lista selezionata", "Seleziona una lista da cui rimuovere l'articolo.");
+            return;
+        }
 
-//         String selectedArticleName = articlePanel.getArticleJList().getSelectedValue();
-//         if (selectedArticleName == null) {
-//             showMessage(articlePanel, "Seleziona un articolo da rimuovere.");
-//             return;
-//         }
+        String selectedArticleName = articlePanel.getArticleJList().getSelectedValue();
+        if (selectedArticleName == null) {
+            showMessage(articlePanel, "Nessun articolo selezionato", "Seleziona un articolo da rimuovere.");
+            return;
+        }
 
-//         try {
-//             currentList.removeArticle(selectedArticleName);
-//             articlePanel.getArticleModel().removeElement(selectedArticleName);
-//             detailPanel.getArticleDetailsTextArea().setText("");
-//             updateArticleInfo();
-//             showMessage(articlePanel, "Articolo rimosso con successo.");
-//         } catch (Exception ex) {
-//             showError(articlePanel, "Errore: " + ex.getMessage());
-//         }
-//     }
+        try {
+            currentList.removeArticle(selectedArticleName);
+            articlePanel.getArticleModel().removeElement(selectedArticleName);
+            detailPanel.getArticleDetailsTextArea().setText("");
+            updateArticleInfo();
+            showMessage(articlePanel, "Articolo rimosso", "Articolo rimosso con successo.");
+        } catch (ArticleNotFoundException ex) {
+            showError(articlePanel, "Errore articolo", "Errore: " + ex.getMessage());
+        }
+    }
 
-//     private void updateArticleDetails() {
-//         String selectedArticleName = articlePanel.getArticleJList().getSelectedValue();
+    private void updateArticleDetails() {
+        String selectedArticleName = articlePanel.getArticleJList().getSelectedValue();
 
-//         if (currentList != null && selectedArticleName != null) {
-//             Article article = currentList.getArticleByName(selectedArticleName);
+        if (currentList != null && selectedArticleName != null) {
+            Article article = currentList.getArticleByName(selectedArticleName);
 
-//             if (article != null) {
-//                 detailPanel.getArticleDetailsTextArea().setText("Nome: " + article.getName() + "\nCosto: " + article.getCost() + "\nQuantità: " + article.getQuantity() + "\nCategoria: " + article.getCategory());
-//             }
-//         }
-//     }
+            if (article != null) {
+                detailPanel.getArticleDetailsTextArea().setText("Nome: " + article.getName() + "\nCosto: " + article.getCost() + "\nQuantità: " + article.getQuantity() + "\nCategoria: " + article.getCategory());
+            }
+        }
+    }
 
-//     public void clearArticles() {
-//         articlePanel.getArticleModel().clear();
-//         detailPanel.getArticleDetailsTextArea().setText("");
-//         updateArticleInfo();
-//     }
-// }
+    public void clearArticles() {
+        articlePanel.getArticleModel().clear();
+        detailPanel.getArticleDetailsTextArea().setText("");
+        updateArticleInfo();
+    }
+}

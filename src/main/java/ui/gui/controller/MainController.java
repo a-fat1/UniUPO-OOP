@@ -1,34 +1,42 @@
 package ui.gui.controller;
 
 import model.ListManager;
+
+import java.util.function.Consumer;
+
+import model.CategoryManager;
 import ui.gui.view.frame.MainFrame;
 
 public class MainController {
     private MainFrame mainFrame;
-    private ListManager manager;
-    private Runnable onReturn;
+    private ListManager listManager;
+    private CategoryManager categoryManager;
+    private Consumer<Boolean> onReturn;
 
-    // private ListController listController;
-    // private ArticleController articleController;
-    // private CategoryController categoryController;
-    // private MenuBarController menuBarController;
+    private ListController listController;
+    private ArticleController articleController;
+    private CategoryController categoryController;
 
-    public MainController(MainFrame mainFrame, ListManager manager, Runnable onReturn) {
+    public MainController(MainFrame mainFrame, Consumer<Boolean> onReturn) {
         this.mainFrame = mainFrame;
-        this.manager = manager;
         this.onReturn = onReturn;
+
+        // Inizializzazione dei manager
+        this.listManager = new ListManager();
+        this.categoryManager = new CategoryManager();
 
         initializeControllers();
     }
 
     private void initializeControllers() {
-        // listController = new ListController(mainFrame.listPanel, manager);
-        // articleController = new ArticleController(mainFrame.articlePanel, mainFrame.detailPanel, manager);
-        // categoryController = new CategoryController(mainFrame.categoryPanel, manager);
-        // menuBarController = new MenuBarController(mainFrame.menuBar, mainFrame, onReturn);
+        // Inizializzazione dei controller con i parametri aggiornati
+        categoryController = new CategoryController(mainFrame.categoryPanel, categoryManager, listManager);
+        listController = new ListController(mainFrame.listPanel, listManager);
+        articleController = new ArticleController(mainFrame.articlePanel, mainFrame.detailPanel, listManager, categoryController);
+        new MenuBarController(mainFrame.menuBar, mainFrame, onReturn, listController, categoryManager, categoryController);
 
-        // listController.setArticleController(articleController);
-        // articleController.setCategoryController(categoryController);
-        // menuBarController.setListController(listController);
+        // Collegamento dei controller
+        listController.setArticleController(articleController);
+        // Non è più necessario il setCategoryController, poiché il CategoryController viene passato direttamente all'ArticleController nel costruttore
     }
 }

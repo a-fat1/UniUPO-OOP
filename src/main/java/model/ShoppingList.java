@@ -109,14 +109,19 @@ public class ShoppingList implements Iterable<Article> {
 
 	/**
 	 * Cerca articoli in base a una stringa specificata, che può corrispondere
-	 * al nome o alla categoria a seconda del parametro.
+	 * al nome o alla categoria a seconda del parametro specificato.
 	 *
-	 * @param stringToSearch la stringa da cercare.
+	 * @param stringToSearch la stringa da cercare; deve essere non nulla e non vuota.
 	 * @param isSearchForCategory true per cercare nella categoria, false per cercare nel nome.
-	 * @return una lista di articoli corrispondenti.
-	 * @throws ArticleNotFoundException se non viene trovato nessun articolo corrispondente.
+	 * @return lista di articoli corrispondenti alla stringa di ricerca.
+	 * @throws ArticleNotFoundException se non viene trovato nessun articolo corrispondente alla ricerca.
+	 * @throws InvalidInputException se la stringa di ricerca è nulla o vuota.
 	 */
-	public List<Article> findArticles(String stringToSearch, boolean isSearchForCategory) throws ArticleNotFoundException {
+	public List<Article> findArticles(String stringToSearch, boolean isSearchForCategory) throws ArticleNotFoundException, InvalidInputException {
+		if (stringToSearch == null || stringToSearch.isEmpty()) {
+			throw new InvalidInputException("stringa di ricerca non valida.");
+		}
+
 		List<Article> searchResult = new ArrayList<>();
 		for (Article article : this) {
 			// Controlla se c'è corrispondenza con il nome o la categoria dell'articolo

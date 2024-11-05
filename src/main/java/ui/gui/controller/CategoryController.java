@@ -1,77 +1,100 @@
-// package ui.gui.controller;
+package ui.gui.controller;
 
-// import ui.gui.base.BaseController;
-// import ui.gui.view.panel.CategoryPanel;
-// import model.ListManager;
+import ui.gui.base.BaseController;
+import ui.gui.view.panel.CategoryPanel;
 
-// import javax.swing.JOptionPane;
-// import java.awt.event.ActionEvent;
-// import java.awt.event.ActionListener;
+import model.exceptions.io.InvalidInputException;
+import model.exceptions.domain.CategoryNotFoundException;
 
-// public class CategoryController extends BaseController implements ActionListener {
-//     private CategoryPanel categoryPanel;
-//     private ListManager manager;
+import model.ListManager;
+import model.CategoryManager;
 
-//     public CategoryController(CategoryPanel categoryPanel, ListManager manager) {
-//         this.categoryPanel = categoryPanel;
-//         this.manager = manager;
+import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-//         initializeCategories();
-//         addListeners();
-//     }
+import java.util.Set;
 
-//     private void addListeners() {
-//         categoryPanel.addCategoryButton.addActionListener(this);
-//         categoryPanel.removeCategoryButton.addActionListener(this);
-//     }
+public class CategoryController extends BaseController implements ActionListener {
+    private CategoryPanel categoryPanel;
+    private CategoryManager categoryManager;
+    private ListManager listManager;
 
-//     @Override
-//     public void actionPerformed(ActionEvent e) {
-//         Object source = e.getSource();
+    public CategoryController(CategoryPanel categoryPanel, CategoryManager categoryManager, ListManager listManager) {
+        this.categoryPanel = categoryPanel;
+        this.categoryManager = categoryManager;
+        this.listManager = listManager;
 
-//         if (source == categoryPanel.addCategoryButton) {
-//             addCategory();
-//         } else if (source == categoryPanel.removeCategoryButton) {
-//             removeCategory();
-//         }
-//     }
+        initializeCategories();
+        addListeners();
+    }
 
-//     public void initializeCategories() {
-//         categoryPanel.getCategoryModel().clear();
-//         for (String category : manager.getCategories()) {
-//             categoryPanel.getCategoryModel().addElement(category);
-//         }
-//     }
+    private void addListeners() {
+        categoryPanel.addCategoryButton.addActionListener(this);
+        categoryPanel.removeCategoryButton.addActionListener(this);
+    }
 
-//     public void updateCategories() {
-//         initializeCategories();
-//     }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
 
-//     public void addCategory() {
-//         String category = JOptionPane.showInputDialog(categoryPanel, "Inserisci il nome della nuova categoria:");
-//         if (category != null && !category.trim().isEmpty()) {
-//             try {
-//                 manager.addCategory(category.trim());
-//                 categoryPanel.getCategoryModel().addElement(category.trim());
-//                 showMessage(categoryPanel, "Categoria aggiunta con successo.");
-//             } catch (Exception ex) {
-//                 showError(categoryPanel, "Errore: " + ex.getMessage());
-//             }
-//         }
-//     }
+        if (source == categoryPanel.addCategoryButton) {
+            addCategory();
+        } else if (source == categoryPanel.removeCategoryButton) {
+            removeCategory();
+        }
+    }
 
-//     public void removeCategory() {
-//         String category = categoryPanel.getCategoryJList().getSelectedValue();
-//         if (category != null && !category.trim().isEmpty()) {
-//             try {
-//                 manager.removeCategory(category.trim());
-//                 categoryPanel.getCategoryModel().removeElement(category);
-//                 showMessage(categoryPanel, "Categoria rimossa con successo.");
-//             } catch (Exception ex) {
-//                 showError(categoryPanel, "Errore: " + ex.getMessage());
-//             }
-//         } else {
-//             showMessage(categoryPanel, "Seleziona una categoria da rimuovere.");
-//         }
-//     }
-// }
+    public void initializeCategories() {
+        categoryPanel.getCategoryModel().clear();
+        Set<String> categories = categoryManager.getCategories();
+        for (String category : categories) {
+            categoryPanel.getCategoryModel().addElement(category);
+        }
+    }
+
+    public void updateCategories() {
+        initializeCategories();
+    }
+
+    // Metodo esistente per aggiungere una categoria tramite input utente
+    public void addCategory() {
+        String category = JOptionPane.showInputDialog(categoryPanel, "Inserisci il nome della nuova categoria:");
+        if (category != null && !category.trim().isEmpty()) {
+            try {
+                categoryManager.addCategory(category.trim());
+                categoryPanel.getCategoryModel().addElement(category.trim());
+                showMessage(categoryPanel, "Aggiunta categoria", "Categoria aggiunta con successo.");
+            } catch (InvalidInputException ex) {
+                showError(categoryPanel, "Errore categoria", "Errore: " + ex.getMessage());
+            }
+        }
+    }
+
+    public void addCategory(String categoryName) throws InvalidInputException {
+        categoryManager.addCategory(categoryName);
+        categoryPanel.getCategoryModel().addElement(categoryName);
+        showMessage(categoryPanel, "Aggiunta categoria", "Categoria aggiunta con successo.");
+    }
+
+    public void removeCategory() {
+        String category = categoryPanel.getCategoryJList().getSelectedValue();
+        if (category != null && !category.trim().isEmpty()) {
+            try {
+                categoryManager.removeCategory(category.trim());
+                // Aggiorna le categorie negli articoli delle liste della spesa
+                categoryManager.updateCategoryInAllLists(listManager.getShoppingLists(), category.trim());
+                categoryPanel.getCategoryModel().removeElement(category);
+                showMessage(categoryPanel, "Categoria rimossa", "Categoria rimossa con successo.");
+            } catch (InvalidInputException | CategoryNotFoundException ex) {
+                showError(categoryPanel, "Errore categoria", "Errore: " + ex.getMessage());
+            }
+        } else {
+            showMessage(categoryPanel, "Nessuna categoria selezionata", "Seleziona una categoria da rimuovere.");
+        }
+    }
+
+    public Set<String> getAllCategories() {
+        return categoryManager.getCategories();
+    }
+}
