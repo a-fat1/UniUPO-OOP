@@ -12,43 +12,69 @@ import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 
+/**
+ * Pannello per la visualizzazione e gestione delle liste della spesa.
+ * Fornisce una lista di liste della spesa e pulsanti per aggiungere e rimuovere liste.
+ */
 public class ListPanel extends BasePanel {
-    private DefaultListModel<String> listModel;
-    private JList<String> shoppingListJList;
-    public JButton addListButton;
-    public JButton removeListButton;
+	/** Modello per la lista delle liste della spesa. */
+	private DefaultListModel<String> listModel;
 
-    public ListPanel() {
-        super();
-    }
+	/** Lista grafica che visualizza le liste della spesa. */
+	private JList<String> shoppingListJList;
 
-    @Override
-    protected void initializePanel() {
-        setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder("Liste della spesa"));
+	/** Pulsante per aggiungere una lista della spesa. */
+	public JButton addListButton;
 
-        listModel = new DefaultListModel<>();
-        shoppingListJList = new JList<>(listModel);
-        JScrollPane listScrollPane = new JScrollPane(shoppingListJList);
+	/** Pulsante per rimuovere una lista della spesa. */
+	public JButton removeListButton;
 
-        // Pulsanti per aggiungere e rimuovere liste
-        addListButton = new JButton("Aggiungi lista");
-        removeListButton = new JButton("Rimuovi lista");
+	/** Costruisce un pannello per la gestione delle liste della spesa. */
+	public ListPanel() {
+		super();
+	}
 
-        // JPanel per i pulsanti
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(addListButton);
-        buttonPanel.add(removeListButton);
+	/** Inizializza i componenti del pannello, inclusa la lista e i pulsanti. */
+	@Override
+	protected void initializePanel() {
+		// Imposta il layout del pannello e aggiunge un bordo con titolo
+		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createTitledBorder("Liste della spesa"));
 
-        add(listScrollPane, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-    }
+		// Crea il modello e la lista grafica per visualizzare le liste della spesa
+		listModel = new DefaultListModel<>();
+		shoppingListJList = new JList<>(listModel);
+		JScrollPane listScrollPane = new JScrollPane(shoppingListJList);
 
-    public DefaultListModel<String> getListModel() {
-        return listModel;
-    }
+		// Inizializza i pulsanti per aggiungere e rimuovere liste della spesa
+		addListButton = new JButton("Aggiungi lista");
+		removeListButton = new JButton("Rimuovi lista");
 
-    public JList<String> getShoppingListJList() {
-        return shoppingListJList;
-    }
+		// Crea un pannello per i pulsanti e li aggiunge
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		buttonPanel.add(addListButton);
+		buttonPanel.add(removeListButton);
+
+		// Aggiunge la lista e il pannello dei pulsanti al pannello principale
+		add(listScrollPane, BorderLayout.CENTER);
+		add(buttonPanel, BorderLayout.SOUTH);
+	}
+
+	/**
+	 * Ottiene il modello della lista delle liste della spesa.
+	 *
+	 * @return Modello della lista per le liste della spesa.
+	 */
+	public DefaultListModel<String> getListModel() {
+		return listModel;
+	}
+
+	/**
+	 * Ottiene la lista grafica delle liste della spesa.
+	 *
+	 * @return Lista grafica delle liste della spesa.
+	 */
+	public JList<String> getShoppingListJList() {
+		return shoppingListJList;
+	}
 }

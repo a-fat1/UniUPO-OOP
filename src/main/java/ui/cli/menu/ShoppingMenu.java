@@ -145,7 +145,7 @@ public class ShoppingMenu extends BaseMenu {
 	/**
 	 * Ottiene i dettagli dell'articolo dall'utente.
 	 *
-	 * @return un nuovo oggetto `Article` basato sui dettagli forniti dall'utente.
+	 * @return Un nuovo oggetto `Article` basato sui dettagli forniti dall'utente.
 	 * @throws InvalidInputException se i dettagli forniti non sono validi.
 	 */
 	private Article getArticleDetails() throws InvalidInputException {
@@ -228,7 +228,7 @@ public class ShoppingMenu extends BaseMenu {
 	 * Restituisce il nome del file di default per il salvataggio o caricamento della lista.
 	 *
 	 * @param messageIO il messaggio da mostrare per richiedere il nome del file.
-	 * @return il nome del file da utilizzare per il salvataggio/caricamento.
+	 * @return Il nome del file da utilizzare per il salvataggio/caricamento.
 	 */
 	private String defaultFile(String messageIO) {
 		String listFile = readString(messageIO);

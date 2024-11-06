@@ -44,7 +44,7 @@ public abstract class BaseMenu {
 	 * Legge una stringa dall'input dopo aver mostrato un messaggio di prompt.
 	 *
 	 * @param prompt il messaggio da mostrare prima della lettura dell'input.
-	 * @return la stringa letta dall'utente, senza spazi iniziali e finali.
+	 * @return La stringa letta dall'utente, senza spazi iniziali e finali.
 	 */
 	protected String readString(String prompt) {
 		System.out.print(prompt);
@@ -55,7 +55,7 @@ public abstract class BaseMenu {
 	 * Legge un numero intero dall'input gestendo gli errori di formattazione.
 	 *
 	 * @param prompt il messaggio da mostrare per la richiesta di input
-	 * @return il numero intero inserito dall'utente
+	 * @return Il numero intero inserito dall'utente
 	 */
 	protected int readInt(String prompt) {
 		while (true) {
@@ -71,7 +71,7 @@ public abstract class BaseMenu {
 	 * Legge un numero decimale dall'input gestendo gli errori di formattazione.
 	 *
 	 * @param prompt il messaggio da mostrare per la richiesta di input
-	 * @return il numero decimale inserito dall'utente
+	 * @return Il numero decimale inserito dall'utente
 	 */
 	protected double readDouble(String prompt) {
 		while (true) {
@@ -117,7 +117,7 @@ public abstract class BaseMenu {
 	 * Chiede all'utente di confermare una domanda con "si" o "no".
 	 *
 	 * @param question la domanda da mostrare all'utente.
-	 * @return true se l'utente conferma con una risposta positiva, false altrimenti.
+	 * @return Ritorna true se l'utente conferma con una risposta positiva, false in caso contrario.
 	 */
 	protected boolean confirmQuestion(String question) {
 		String answer;
@@ -136,7 +136,7 @@ public abstract class BaseMenu {
 	 * Verifica se la risposta dell'utente è valida (si o no).
 	 *
 	 * @param answer la risposta inserita dall'utente.
-	 * @return true se la risposta è "si" o "no", false altrimenti.
+	 * @return Restituisce true se la risposta è "si" o "no", false in caso contrario.
 	 */
 	private boolean isValidAnswer(String answer) {
 		return answer.equalsIgnoreCase("si") || answer.equalsIgnoreCase("sì") || answer.equalsIgnoreCase("no");
@@ -146,7 +146,7 @@ public abstract class BaseMenu {
 	 * Verifica se la risposta dell'utente è positiva.
 	 *
 	 * @param answer la risposta inserita dall'utente.
-	 * @return true se la risposta è "si" o "sì", false altrimenti.
+	 * @return Ritorna true se la risposta è "si" o "sì", false in caso contrario.
 	 */
 	private boolean isPositiveAnswer(String answer) {
 		return answer.equalsIgnoreCase("si") || answer.equalsIgnoreCase("sì");
@@ -155,6 +155,7 @@ public abstract class BaseMenu {
 	/**
 	 * Mostra una lista di elementi sulla console.
 	 *
+	 * @param <T> il tipo di elemento contenuto nella collezione.
 	 * @param items la collezione di elementi da mostrare.
 	 * @param listDescription la descrizione della lista.
 	 * @param errorList il messaggio di errore da mostrare se la lista è vuota.
@@ -183,7 +184,7 @@ public abstract class BaseMenu {
 	 *
 	 * @param collection la collezione da verificare.
 	 * @param noElementsMessage il messaggio da mostrare se la collezione è vuota.
-	 * @return true se la collezione è vuota, false altrimenti.
+	 * @return Restituisce true se la collezione è vuota, false in caso contrario.
 	 */
 	protected boolean isCollectionEmpty(Collection<?> collection, String noElementsMessage) {
 		if (collection.isEmpty()) {

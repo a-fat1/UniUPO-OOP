@@ -95,7 +95,7 @@ public class InputOutputList {
 	/**
 	 * Verifica l'esistenza della directory per le liste della spesa e la crea se non esiste.
 	 *
-	 * @return il percorso della directory.
+	 * @return Il percorso della directory.
 	 * @throws FileOperationException se la directory non può essere creata o se esiste ma non è una cartella.
 	 */
 	public String checkListsDir() throws FileOperationException {

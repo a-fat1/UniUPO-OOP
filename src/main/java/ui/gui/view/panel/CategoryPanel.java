@@ -2,9 +2,6 @@ package ui.gui.view.panel;
 
 import ui.gui.base.BasePanel;
 
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
-
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -12,43 +9,72 @@ import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+
+/**
+ * Pannello per la visualizzazione e gestione delle categorie.
+ * Fornisce una lista di categorie e pulsanti per aggiungere e rimuovere categorie.
+ */
 public class CategoryPanel extends BasePanel {
-    private DefaultListModel<String> categoryModel;
-    private JList<String> categoryJList;
-    public JButton addCategoryButton;
-    public JButton removeCategoryButton;
+	/** Modello per la lista delle categorie. */
+	private DefaultListModel<String> categoryModel;
+	
+	/** Lista grafica che visualizza le categorie. */
+	private JList<String> categoryJList;
 
-    public CategoryPanel() {
-        super();
-    }
+	/** Pulsante per aggiungere una categoria. */
+	public JButton addCategoryButton;
 
-    @Override
-    protected void initializePanel() {
-        setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder("Categorie"));
+	/** Pulsante per rimuovere una categoria. */
+	public JButton removeCategoryButton;
 
-        categoryModel = new DefaultListModel<>();
-        categoryJList = new JList<>(categoryModel);
-        JScrollPane categoryScrollPane = new JScrollPane(categoryJList);
+	/** Costruisce un pannello per la gestione delle categorie. */
+	public CategoryPanel() {
+		super();
+	}
 
-        // Pulstanti per aggiungere e rimuovere categorie
-        addCategoryButton = new JButton("Aggiungi categoria");
-        removeCategoryButton = new JButton("Rimuovi categoria");
+	/** Inizializza i componenti del pannello, inclusi la lista e i pulsanti. */
+	@Override
+	protected void initializePanel() {
+		// Imposta il layout del pannello e aggiunge un bordo con titolo
+		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createTitledBorder("Categorie"));
 
-        // JPanel per i pulsanti
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(addCategoryButton);
-        buttonPanel.add(removeCategoryButton);
+		// Crea il modello e la lista grafica per visualizzare le categorie
+		categoryModel = new DefaultListModel<>();
+		categoryJList = new JList<>(categoryModel);
+		JScrollPane categoryScrollPane = new JScrollPane(categoryJList);
 
-        add(categoryScrollPane, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-    }
+		// Inizializza i pulsanti per aggiungere e rimuovere categorie
+		addCategoryButton = new JButton("Aggiungi categoria");
+		removeCategoryButton = new JButton("Rimuovi categoria");
 
-    public DefaultListModel<String> getCategoryModel() {
-        return categoryModel;
-    }
+		// Crea un pannello per i pulsanti e li aggiunge
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		buttonPanel.add(addCategoryButton);
+		buttonPanel.add(removeCategoryButton);
 
-    public JList<String> getCategoryJList() {
-        return categoryJList;
-    }
+		// Aggiunge la lista e il pannello dei pulsanti al pannello principale
+		add(categoryScrollPane, BorderLayout.CENTER);
+		add(buttonPanel, BorderLayout.SOUTH);
+	}
+
+	/**
+	 * Ottiene il modello della lista delle categorie.
+	 *
+	 * @return Modello della lista delle categorie.
+	 */
+	public DefaultListModel<String> getCategoryModel() {
+		return categoryModel;
+	}
+
+	/**
+	 * Ottiene la lista grafica delle categorie.
+	 *
+	 * @return Lista grafica delle categorie.
+	 */
+	public JList<String> getCategoryJList() {
+		return categoryJList;
+	}
 }

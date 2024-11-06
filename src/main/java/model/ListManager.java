@@ -27,7 +27,7 @@ public class ListManager {
 	 * Restituisce una lista della spesa specificata dal nome.
 	 *
 	 * @param listName il nome della lista della spesa da recuperare.
-	 * @return la lista della spesa corrispondente al nome specificato.
+	 * @return La lista della spesa corrispondente al nome specificato.
 	 * @throws ListNotFoundException se la lista con il nome specificato non esiste.
 	 */
 	public ShoppingList getShoppingList(String listName) throws ListNotFoundException {
@@ -41,7 +41,7 @@ public class ListManager {
 	/**
 	 * Restituisce tutte le liste della spesa.
 	 *
-	 * @return una collezione di tutte le liste della spesa.
+	 * @return Una collezione di tutte le liste della spesa.
 	 */
 	public Collection<ShoppingList> getShoppingLists() {
 		return shoppingLists.values();

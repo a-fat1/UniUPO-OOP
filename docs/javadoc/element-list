@@ -1,0 +1,13 @@
+unnamed package
+model
+model.exceptions.domain
+model.exceptions.io
+ui.cli.base
+ui.cli.menu
+ui.gui
+ui.gui.base
+ui.gui.controller
+ui.gui.view.bar
+ui.gui.view.frame
+ui.gui.view.input
+ui.gui.view.panel

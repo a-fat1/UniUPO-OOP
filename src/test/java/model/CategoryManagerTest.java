@@ -134,7 +134,7 @@ public class CategoryManagerTest {
 	@Test
 	public void testRemoveCategoryDefaultCategory() {
 		InvalidInputException exception = assertThrows(InvalidInputException.class, () -> categoryManager.removeCategory(Article.DEFAULT_CATEGORY));
-		String expectedMessage = "non è possibile rimuovere la categoria '" + Article.DEFAULT_CATEGORY + "''.";
+		String expectedMessage = "non è possibile rimuovere la categoria '" + Article.DEFAULT_CATEGORY + "'.";
 		assertEquals(expectedMessage, exception.getMessage());
 	}
 

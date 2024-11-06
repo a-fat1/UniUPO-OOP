@@ -28,7 +28,7 @@ public class CategoryManager {
 	/**
 	 * Restituisce un insieme immutabile delle categorie disponibili.
 	 * 
-	 * @return l'insieme delle categorie, vuoto se non ci sono categorie.
+	 * @return L'insieme delle categorie, vuoto se non ci sono categorie.
 	 */
 	public Set<String> getCategories() {
 		return categories.isEmpty() ? Collections.emptySet() : Collections.unmodifiableSet(categories);

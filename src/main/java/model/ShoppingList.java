@@ -51,7 +51,7 @@ public class ShoppingList implements Iterable<Article> {
 	/**
 	 * Restituisce il nome della lista della spesa.
 	 *
-	 * @return il nome della lista.
+	 * @return Il nome della lista.
 	 */
 	public String getName() {
 		return name;
@@ -61,7 +61,7 @@ public class ShoppingList implements Iterable<Article> {
 	 * Restituisce un articolo specifico per nome.
 	 *
 	 * @param articleName il nome dell'articolo.
-	 * @return l'articolo corrispondente al nome specificato, oppure è nullo se non esiste.
+	 * @return L'articolo corrispondente al nome specificato, oppure è nullo se non esiste.
 	 */
 	public Article getArticleByName(String articleName) {
 		return articles.get(articleName);
@@ -70,7 +70,7 @@ public class ShoppingList implements Iterable<Article> {
 	/**
 	 * Restituisce una collezione immutabile di tutti gli articoli nella lista.
 	 *
-	 * @return una collezione di articoli.
+	 * @return Una collezione di articoli.
 	 */
 	public Collection<Article> getArticles() {
 		return articles.isEmpty() ? Collections.emptyList() : Collections.unmodifiableCollection(articles.values());
@@ -113,7 +113,7 @@ public class ShoppingList implements Iterable<Article> {
 	 *
 	 * @param stringToSearch la stringa da cercare; deve essere non nulla e non vuota.
 	 * @param isSearchForCategory true per cercare nella categoria, false per cercare nel nome.
-	 * @return lista di articoli corrispondenti alla stringa di ricerca.
+	 * @return Lista di articoli corrispondenti alla stringa di ricerca.
 	 * @throws ArticleNotFoundException se non viene trovato nessun articolo corrispondente alla ricerca.
 	 * @throws InvalidInputException se la stringa di ricerca è nulla o vuota.
 	 */
@@ -143,7 +143,7 @@ public class ShoppingList implements Iterable<Article> {
 	/**
 	 * Calcola il totale della quantità e del costo degli articoli nella lista.
 	 *
-	 * @return una mappa con la quantità totale e il costo totale.
+	 * @return Una mappa con la quantità totale e il costo totale.
 	 */
 	public Map<String, Object> getTotalFromList() {
 		int totalQuantity = 0;
@@ -163,7 +163,7 @@ public class ShoppingList implements Iterable<Article> {
 	/**
 	 * Restituisce un iteratore per gli articoli della lista.
 	 *
-	 * @return un iteratore per gli articoli.
+	 * @return Un iteratore per gli articoli.
 	 */
 	@Override
 	public Iterator<Article> iterator() {
@@ -175,7 +175,7 @@ public class ShoppingList implements Iterable<Article> {
 	 * Questo metodo viene utilizzato per stampare correttamente il nome delle liste
 	 * attraverso il metodo displayItems in {@link ui.cli.base.BaseMenu}.
 	 *
-	 * @return il nome della lista della spesa.
+	 * @return Il nome della lista della spesa.
 	 */
 	@Override
 	public String toString() {

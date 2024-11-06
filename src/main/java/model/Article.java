@@ -42,7 +42,7 @@ public class Article {
 	/**
 	 * Restituisce il nome dell'articolo.
 	 *
-	 * @return il nome dell'articolo.
+	 * @return Il nome dell'articolo.
 	 */
 	public String getName() {
 		return name;
@@ -51,7 +51,7 @@ public class Article {
 	/**
 	 * Restituisce il costo dell'articolo.
 	 *
-	 * @return il costo dell'articolo.
+	 * @return Il costo dell'articolo.
 	 */
 	public double getCost() {
 		return cost;
@@ -60,7 +60,7 @@ public class Article {
 	/**
 	 * Restituisce la quantità disponibile dell'articolo.
 	 *
-	 * @return la quantità dell'articolo.
+	 * @return La quantità dell'articolo.
 	 */
 	public int getQuantity() {
 		return quantity;
@@ -69,7 +69,7 @@ public class Article {
 	/**
 	 * Restituisce la categoria dell'articolo.
 	 *
-	 * @return la categoria dell'articolo.
+	 * @return La categoria dell'articolo.
 	 */
 	public String getCategory() {
 		return category;
