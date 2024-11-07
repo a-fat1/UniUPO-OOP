@@ -22,3 +22,9 @@
 
 # Ignore macOS system files
 *.DS_Store
+
+# Ignore lists folder
+lists/
+
+# Ignore LaTeX folder in docs
+docs/LaTeX/

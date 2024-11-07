@@ -79,7 +79,7 @@ public class MenuBarController extends BaseController {
 		menuBar.searchItemByCategory.addActionListener(e -> searchArticles(true));
 		menuBar.clearList.addActionListener(e -> removeAllArticles());
 		menuBar.exitItem.addActionListener(e -> {
-			int confirm = JOptionPane.showConfirmDialog(frame, "Tutte le liste non salvata andranno perdute. Sei sicuro di voler ritornare alla selezione dell'interfaccia?", "Termina interfaccia grafica", JOptionPane.YES_NO_OPTION);
+			int confirm = JOptionPane.showConfirmDialog(frame, "Tutte le liste non salvate andranno perdute. Sei sicuro di voler ritornare alla selezione dell'interfaccia?", "Termina interfaccia grafica", JOptionPane.YES_NO_OPTION);
 			if (confirm == JOptionPane.YES_OPTION) {
 				if (onReturn != null) {
 					onReturn.accept(false);
